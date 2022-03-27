@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Star Generator | SpaceGiraffe.io</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#101219">
+
+    <!--Orbitron-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet">
+    <script type="text/javascript" src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <style>
+body {
+  overflow-x: hidden;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  position: relative;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.input-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 1.25rem;
+}
+
+label {
+  color: white;
+  font-weight: bold;
+  font-size: 1.25rem;
+  font-family: 'Orbitron', sans-serif;
+  margin-bottom: 1rem;
+}
+
+input[type=text],
+input[type=number] {
+  padding: 6px 8px;
+  border-radius: 6px;
+  font-size: 2rem;
+  border: none;
+  box-shadow: 0 0 4px 3px rgba(255, 255, 255, .3);
+  width: 100%;
+  max-width: 250px;
+  font-family: 'Orbitron', sans-serif;
+  text-align: center;
+}
+
+.buttons-wrapper {
+  display: flex;
+}
+
+.button {
+  cursor: pointer;
+  background: white;
+  border-radius: 50px;
+  border: none;
+  text-align: center;
+  padding: 8px 32px;
+  font-size: 1.5rem;
+  font-family: 'Orbitron', sans-serif;
+}
+
+.button:hover {
+  color: white;
+  background: #d241ba;
+  background: -webkit-linear-gradient(to right, #d241ba, #ff8c00);
+  background: linear-gradient(to right, #d241ba, #ff8c00);
+}
+
+.button:not(:last-child) {
+  margin-right: 1rem;
+}
+
+.background {
+  position: absolute;
+  display: flex;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+  background: black;
+  z-index: 0;
+}
+
+.background-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+  background: url('assets/space-mountain.png');
+  background-size: 100% auto;
+  background-position: bottom center;
+  background-repeat: no-repeat;
+  z-index: 5;
+}
+
+.stars {
+  width: 100vw;
+  height: 100vh;
+  background: transparent;
+}
+
+.stars-slow {
+  animation: rotate 1800s infinite linear;
+  z-index: 1;
+}
+
+.stars-fast {
+  animation: rotate 1200s infinite linear;
+  z-index: 2;
+}
+
+.star {
+  position: absolute;
+  border-radius: 10px;
+  background: white;
+}
+
+.star-1 {
+  width: 1px;
+  height: 1px;
+}
+
+.star-2 {
+  width: 2px;
+  height: 2px;
+}
+
+.star-3 {
+  width: 3px;
+  height: 4px;
+  box-shadow: 0 0 4px 1px rgba(255, 255, 255, 0.5);
+}
+
+.star-4 {
+  width: 4px;
+  height: 6px;
+  box-shadow: 0 0 8px 3px rgba(255, 255, 255, 0.5);
+}
+
+.main-content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  justify-content: flex-start;
+  align-items: center;
+  min-height: 100vh;
+  width: 100%;
+  padding: 1.25rem 1.25rem 7.5rem;
+  z-index: 10;
+}
+
+.title-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.title {
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 400;
+  color: white;
+  letter-spacing: 2.5rem;
+  display: none;
+}
+
+.mobile-title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 400;
+  font-size: 1.25rem;
+  width: 100%;
+  color: white;
+}
+
+.mobile-title span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 4rem;
+  height: 4rem;
+}
+
+.description {
+  color: white;
+  font-size: 1rem;
+  font-style: italic;
+  margin: 0 0 1.25rem;
+  text-align: center;
+}
+
+footer {
+  position: absolute;
+  bottom: 0;
+  padding: .5rem;
+  text-align: center;
+  color: rgba(255, 255, 255, 1);
+  width: 100%;
+}
+
+/* desktop styles */
+
+@media(min-width: 768px){
+  .main-content {
+    padding: 15rem 1.25rem;
+    justify-content: center;
+  }
+
+  .title-wrapper {
+    position: absolute;
+    top: 5rem;
+  }
+
+  .title {
+    letter-spacing: 2.5rem;
+    display: block;
+  }
+
+  .mobile-title {
+    display: none;
+  }
+
+  .description {
+    margin: 1.25rem 0;
+    font-size: 1.25rem;
+  }
+}
+    </style>
+  </head>
+  <body>
+    <div id="background" class="background">
+	    <div id="stars-wrapper">
+		    <div id="stars-1" class="stars"></div>
+	    </div>
+    </div>
+
+    <div class="main-content">
+      <div class="title-wrapper">
+        <h1 class="title">
+          STAR GENERATOR
+        </h1>
+        <div class="mobile-title">
+          <span>S</span>
+          <span>T</span>
+          <span>A</span>
+          <span>R</span>
+          <span>G</span>
+          <span>E</span>
+          <span>N</span>
+          <span>E</span>
+          <span>R</span>
+          <span>A</span>
+          <span>T</span>
+          <span>O</span>
+          <span>R</span>
+          <span>R</span>
+          <span>R</span>
+        </div>
+        <p class="description">Generate stars as transparent PNG files!</p>
+      </div>
+
+      <form>
+        <div class="input-wrapper">
+          <label for="star-count">How many?</label>
+          <input id="star-count" type="number" value="1000" max="10000">
+        </div>
+        <div class="buttons-wrapper">
+          <input type="submit" class="button" value="Generate">
+          <button type="button" class="button" onclick="getScreenshotOfElement('#background', 0, 0, window.innerWidth, window.innerHeight)">Save</button>
+        </div>
+      </form>
+      <a id="link"></a>
+
+      <footer></footer>
+    </div>
+
+    <script>
+      // form submit
+      document.querySelector('form').onsubmit = onSubmit;
+
+      // inject the footer
+      document.querySelector('footer').innerHTML = `&copy; ${new Date().getFullYear()} SPACEGIRAFFE, LLC`;
+
+      // create stars
+      createStars('#stars-1');
+
+      function onSubmit(e) {
+        e.preventDefault();
+        createStars('#stars-1');
+      }
+
+      function createStars(selector) {
+        const element = document.querySelector(selector);
+        // clear the element
+        element.innerHTML = '';
+
+        // get the stars count
+        const n = document.getElementById('star-count').value;
+
+        let star;
+        let starType;
+        let left;
+        let top;
+        for (let i = 0; i < n; i++) {
+          star = document.createElement('div');
+
+          starType = Math.floor(Math.random() * 5);
+          star.className = `star star-${starType}`;
+
+          left = Math.random() * 100;
+          top = Math.random() * 100;
+          star.style.left = `${left}%`;
+          star.style.top = `${top}%`;
+
+          element.appendChild(star);
+        }
+      }
+
+      // from https://stackoverflow.com/questions/2754118/how-to-save-export-a-dom-element-to-an-image
+      function getScreenshotOfElement(selector, posX, posY, width, height) {
+        html2canvas(document.querySelector(selector)).then((canvas) => {
+          var context = canvas.getContext('2d');
+          var imageData = context.getImageData(posX, posY, width, height).data;
+
+          // set transparency
+          // https://www.patrick-wied.at/blog/how-to-create-transparency-in-images-with-html5canvas
+          let r;
+          for (let i = 0; i < imageData.length; i += 4) {
+            r = imageData[i]; // since it's only black and white, any of the rgb values will do
+            if (r === 0) {
+              // black, set transparent
+              imageData[i + 3] = 0;
+            } else {
+              // white, set alpha to the difference
+              imageData[i] = 255;
+              imageData[i + 1] = 255;
+              imageData[i + 2] = 255;
+              imageData[i + 3] = r;
+            }
+          }
+
+          var outputCanvas = document.createElement('canvas');
+          var outputContext = outputCanvas.getContext('2d');
+          outputCanvas.width = width;
+          outputCanvas.height = height;
+
+          var idata = outputContext.createImageData(width, height);
+          idata.data.set(imageData);
+          outputContext.putImageData(idata, 0, 0);
+          var imageUrl = outputCanvas.toDataURL().replace("image/png", "image/octet-stream");
+          var link = document.getElementById('link');
+          link.setAttribute('download', 'stars.png');
+          link.setAttribute('href', imageUrl);
+          link.click();
+        });
+      }
+    </script>
+  </body>
+</html>
